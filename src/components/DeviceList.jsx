@@ -5,7 +5,7 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 const WS_URL = process.env.REACT_APP_WS_URL || 'ws://localhost:5000'; 
 
 // Establish the WebSocket connection
-const socket = io(WS_URL);  // Use WS_URL environment variable for WebSocket URL
+const socket = io(WS_URL);
 
 function DeviceList() {
   const [devices, setDevices] = useState([]);
@@ -16,10 +16,9 @@ function DeviceList() {
 
     // Listen for real-time updates from the server
     socket.on('device:update', (updatedDevice) => {
-      // Log the received data to check if it's correct
       console.log('Received device:update:', updatedDevice);
 
-      // Update the devices state with the updated device data
+      // Update the devices state with the new device data
       setDevices((prevDevices) =>
         prevDevices.map((device) =>
           device.id === updatedDevice.id ? updatedDevice : device
@@ -33,7 +32,7 @@ function DeviceList() {
     };
   }, []);
 
-  // Fetch devices from the server
+  // Fetch devices from the backend
   const fetchDevices = async () => {
     try {
       const response = await fetch(`${API_URL}/device/all`);
@@ -46,10 +45,10 @@ function DeviceList() {
     }
   };
 
-  // Toggle device status (sending a patch request to the backend)
+  // Toggle device status (PATCH request to backend)
   const toggleDeviceStatus = async (device) => {
     const updatedStatus = !device.status;
-    const updatedLightStatus = updatedStatus ? 'on' : 'off';  // Change the value to 'on' or 'off'
+    const updatedLightStatus = updatedStatus ? 'ON' : 'OFF'; 
 
     try {
       // Send the PATCH request to update the device
@@ -60,7 +59,7 @@ function DeviceList() {
         },
         body: JSON.stringify({
           status: updatedStatus,
-          value: updatedStatus ? 1.0 : 0.0, // Update the value based on status
+          value: updatedStatus ? 1.0 : 0.0, 
         }),
       });
 
@@ -68,12 +67,13 @@ function DeviceList() {
       if (updatedDevice.error) {
         console.error('Failed to update device:', updatedDevice.error);
       } else {
-        // Log the emitted event to check the JSON being sent
-        const deviceKey = device.name.toLowerCase();  // Use device name as key
-        console.log(`Emitting device:update: { ${deviceKey}: '${updatedLightStatus}' }`);
+        // Emit WebSocket event with proper format
+        const deviceKey = device.name; // Ensure it's a string
+        const emitPayload = { device_name: deviceKey, status: updatedLightStatus };
 
-        // Emit the socket event with the correct payload once the device status is updated
-        socket.emit('device:update', { [deviceKey]: updatedLightStatus });
+        console.log("Emitting device:update:", emitPayload);
+
+        socket.emit('device:update', emitPayload);
       }
     } catch (err) {
       console.error('Failed to update device status:', err);
