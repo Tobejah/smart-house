@@ -1,0 +1,147 @@
+.dashboard {
+    font-family: Arial, sans-serif;
+    background-color: #76766b;
+    padding: 20px;
+    max-width: 1200px;
+    width: 80%;
+    margin: 20px auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-title {
+    text-align: left;
+    color: #000000;
+    font-size: 2rem;
+    margin-bottom: 30px;
+    font-family: 'Tenor Sans'
+}
+
+.device-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 0;
+    margin: 0;
+}
+
+.device-item {
+    background-color: #1c2120;
+    border: 1px solid #76766b;
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    align-items: flex-start;
+    min-height: 180px;
+}
+
+.device-item:hover {
+    transform: translateY(-5px);
+}
+
+.device-info h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #dcdcd4;
+}
+
+.device-info p {
+    margin: 5px 0;
+    color: #666;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    border-radius: 50%;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+}
+
+input:checked+.slider {
+    background-color: #4CAF50;
+}
+
+input:checked+.slider:before {
+    transform: translateX(26px);
+}
+
+.switch:hover .slider {
+    background-color: #aaa;
+}
+
+@media (max-width: 768px) {
+    .device-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .device-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.device-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.device-name {
+    margin: 0;
+    font-size: 1.2rem;
+    flex-grow: 1;
+    text-align: left;
+    color: #dcdcd4;
+}
+
+.device-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.device-button {
+    cursor: pointer;
+    color: #555;
+    transition: color 0.2s;
+}
+
+.device-button:hover {
+    color: #dcdcd4;
+}
+
